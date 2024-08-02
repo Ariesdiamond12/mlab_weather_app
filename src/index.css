@@ -1,0 +1,7 @@
+* {
+  background: url(./assets/desert.jpg);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
