@@ -5,6 +5,8 @@ import {
   UilSunset,
   UilTear,
   UilSun,
+  UilArrowUp,
+  UilArrowDown,
 } from "@iconscout/react-unicons";
 
 function Temperature() {
@@ -17,15 +19,42 @@ function Temperature() {
     },
     {
       id: 2,
-      Icon: UilTemperature,
+      Icon: UilTear,
       title: "Humidity",
-      value: "34°",
+      value: "34%",
     },
     {
       id: 3,
       Icon: UilWind,
       title: "Wind",
       value: "11 km/h",
+    },
+  ];
+
+  const forecastDetails = [
+    {
+      id: 1,
+      Icon: UilSun,
+      title: "Sunrise",
+      value: "06:30 AM",
+    },
+    {
+      id: 2,
+      Icon: UilSunset,
+      title: "Sunset",
+      value: "17:00 PM",
+    },
+    {
+      id: 3,
+      Icon: UilArrowUp,
+      title: "High",
+      value: "37°",
+    },
+    {
+      id: 4,
+      Icon: UilArrowDown,
+      title: "Low",
+      value: "7°",
     },
   ];
 
@@ -43,10 +72,28 @@ function Temperature() {
         />
         <p className="text-5xl">34°</p>
         <div className="flex flex-col space-y-3 items-start">
-          <div className="flex font-light text-sm items-center justify-center">
-            <UilTemperature size={18} className="mr-1" />
-            Real Feel: <span>35°</span>
-          </div>
+          {weatherDetails.map(({ id, Icon, title, value }) => (
+            <div
+              key={id}
+              className="flex font-light text-sm items-center justify-center"
+            >
+              <Icon size={18} className="mr-1" />
+              {`${title}:`} <span className="font-medium ml-1"> {value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-row items-center justify-center space-x-10 text-sm py-3">
+        <div className="flex flex-row items-center">
+          {forecastDetails.map(({ id, Icon, title, value }) => (
+            <div key={id} className="flex flex-row items-center">
+              <Icon size={30} />
+              <p className="font-light ml-1">
+                {`${title}:`} <span className="font-medium ml-1"> {value}</span>
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
