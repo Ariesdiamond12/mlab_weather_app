@@ -60,7 +60,7 @@ function Temperature() {
 
   return (
     <div>
-      <div className="flex items-center justify-center py-6 text-xl text-cyan-200">
+      <div className="flex items-center justify-center py-6 text-xl">
         <p>Rain</p>
       </div>
 

@@ -7,7 +7,10 @@ import Temperature from "./components/Temperature";
 
 const App = () => {
   return (
-    <div className="mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-sky-600 to-cyan-500 bg-blur-sm h-ft shadow-xl shadow-gray-400">
+    <div
+      className="mx-auto max-w-screen-md mt-4 py-5 px-32 bg-blur-sm h-ft shadow-gray-400 "
+      style={{ backdropFilter: "blur(10px)", border: "0.1px solid white" }}
+    >
       <TopButtons />
       <Inputs />
       <TimeandLocation />
