@@ -36,12 +36,12 @@ function TimeandLocation() {
     <div>
       <div className="flex items-center justify-center my-6">
         <p className="text-xl font-extralight">
-          {dayOfWeek}, {day} {name} {year} | Local time {time}
+          {dayOfWeek}, {day} {name} {year} | Local Time {time}
         </p>
       </div>
 
       <div className="flex items-center justify-center my-3">
-        <p className="text-2xl font-medium">Polokwane, PLK</p>
+        <p className="text-xl font-medium">Polokwane, PLK</p>
       </div>
     </div>
   );
