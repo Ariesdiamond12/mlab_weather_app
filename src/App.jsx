@@ -1,18 +1,31 @@
-import { React, useState } from "react";
+import { useEffect, useState } from "react";
 import UilReact from "@iconscout/react-unicons/icons/uil-react";
 import TopButtons from "./components/TopButtons";
 import Inputs from "./components/Inputs";
 import TimeandLocation from "./components/TimeandLocation";
 import Temperature from "./components/Temperature";
 import Forecast from "./components/Forecast";
-import getFormattedWeatherData from "./services/weatherservice";
+import getFormattedWeatherData from "./services/weatherService";
+import { data } from "autoprefixer";
 
 const App = () => {
+  const [query, setQuery] = useState({ q: "Polokwane" });
+  const [units, setUnits] = useState("metric");
+  const [weather, setWeather] = useState(null);
+
   const getWeather = async () => {
-    const data = await getFormattedWeatherData("weather", { q: "Polokwane" });
+    await getFormattedWeatherData("weather", { q: "Polokwane" }).then(
+      (data) => {
+        setWeather(data);
+      }
+    );
     console.log(data);
   };
   getWeather();
+
+  useEffect(() => {
+    getWeather();
+  }, [query, units]);
 
   return (
     <div
