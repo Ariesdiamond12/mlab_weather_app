@@ -1,5 +1,8 @@
 # React + Vite
 
+ <!-- created a weather app using  React and Vite -->
+  <!-- I used a  weather API to fetch the current weather and 5-day forecast -->
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

@@ -8,7 +8,16 @@ export const getWeatherData = async (infoType, searchParams) => {
   const url = new URL(base_url + infoType);
   url.search = new URLSearchParams({ ...searchParams, appid: api_key });
 
-  return fetch(url).then((res) => res.json());
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch weather data:", error);
+    return {}; // Return an empty object instead of null
+  }
 };
 
 const iconUrlFromCode = (icon) =>
@@ -18,7 +27,10 @@ const formatToLocalTime = (
   secs,
   offset,
   format = "cccc, dd LLL yyy ' | Local time 'hh:mm a"
-) => DateTime.fromSeconds(secs + offset, { zone: "utc" }).toFormat(format);
+) =>
+  DateTime.fromSeconds(secs)
+    .setZone(`UTC${offset / 3600}`)
+    .toFormat(format);
 
 const formatCurrent = (data) => {
   const {
@@ -50,7 +62,6 @@ const formatCurrent = (data) => {
     sunset: formatToLocalTime(sunset, timezone, "hh:mm a"),
     details,
     icon: iconUrlFromCode(icon),
-    formatToLocalTime,
     dt,
     timezone,
     speed,
@@ -61,14 +72,13 @@ const formatForecastWeather = (secs, offset, data) => {
   //hourly
   const hourly = data
     .filter((f) => f.dt > secs)
-
     .map((f) => ({
       temp: f.main.temp,
-      title: formatToLocalTime(f.dt, offset, "hh: mm a"),
+      title: formatToLocalTime(f.dt, offset, "hh:mm a"),
       icon: iconUrlFromCode(f.weather[0].icon),
       data: f.dt_txt,
     }))
-    .slice(0.5);
+    .slice(0, 5); // Corrected slice
 
   //daily
   const daily = data
@@ -89,13 +99,24 @@ const getFormattedWeatherData = async (searchParams) => {
     searchParams
   ).then(formatCurrent);
 
+  if (!formattedCurrentWeather) {
+    console.error("Current weather data not found");
+    return {};
+  }
+
   const { dt, lon, lat, timezone } = formattedCurrentWeather;
 
   const formattedForecastWeather = await getWeatherData("forecast", {
     lon,
     lat,
     units: searchParams.units,
-  }).then((d) => formatForecastWeather(dt, timezone, d.list));
+  }).then((d) => {
+    if (!d || !d.list) {
+      console.error("Forecast data not found");
+      return { hourly: [], daily: [] };
+    }
+    return formatForecastWeather(dt, timezone, d.list);
+  });
 
   return { ...formattedCurrentWeather, ...formattedForecastWeather };
 };
