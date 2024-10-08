@@ -11,7 +11,7 @@ import sun from "../assets/images/clear.png";
 
 function Weather() {
   const inputRef = useRef();
-  const [weatherData, setWeatherData] = useState(true);
+  const [weatherData, setWeatherData] = useState({});
 
   const allIcons = {
     "01d": sun,
@@ -43,18 +43,42 @@ function Weather() {
         const { lat, lon } = data.coord;
         const icon = allIcons[data.weather[0].icon] || sun;
 
-        const forecastUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+        // http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6////////////by city id
+
+        const forecastUrl = ` http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
         const forecastResponse = await fetch(forecastUrl);
         const forecastData = await forecastResponse.json();
+
+        console.log("weatherData", data);
+        console.log("forecastData", forecastData.list);
+
+        const filterDailyForecasts = (forecastList) => {
+          let dailyForecasts = [];
+          let currentDate = null;
+
+          forecastList.forEach((forecast) => {
+            const date = new Date(forecast.dt * 1000).toLocaleDateString(
+              "en-US"
+            );
+            if (date !== currentDate) {
+              dailyForecasts.push(forecast);
+              currentDate = date;
+            }
+          });
+
+          return dailyForecasts;
+        };
 
         setWeatherData({
           humidity: data.main.humidity,
           windSpeed: data.wind.speed,
           temperature: Math.floor(data.main.temp),
           location: data.name,
+
           icon: icon,
-          hourly: forecastData.hourly, // Store hourly forecast
-          daily: forecastData.daily, // Store daily forecast
+
+          hourly: forecastData.list.slice(0, 5), // Store hourly forecast
+          daily: filterDailyForecasts(forecastData.list), // Store daily forecast
         });
       } else {
         console.error("Error fetching weather data:", data.message);
@@ -76,11 +100,11 @@ function Weather() {
       <div className="hourly_forecast">
         <h3>Hourly Forecast</h3>
         <div className="hourly_container">
-          {weatherData.hourly.slice(0, 6).map((hour, index) => (
+          {weatherData.hourly.map((hour, index) => (
             <div key={index} className="hour">
               <p>{new Date(hour.dt * 1000).getHours()}:00</p>
               <img src={allIcons[hour.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(hour.temp)}°C</p>
+              <p>{Math.floor(hour.main.temp)}°C</p>
             </div>
           ))}
         </div>
@@ -93,9 +117,10 @@ function Weather() {
 
     return (
       <div className="daily_forecast">
+        {console.log(weatherData.daily)}
         <h3>Daily Forecast</h3>
         <div className="daily_container">
-          {weatherData.daily.slice(0, 5).map((day, index) => (
+          {weatherData.daily.map((day, index) => (
             <div key={index} className="day">
               <p>
                 {new Date(day.dt * 1000).toLocaleDateString("en-US", {
@@ -103,7 +128,7 @@ function Weather() {
                 })}
               </p>
               <img src={allIcons[day.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(day.temp.day)}°C</p>
+              <p>{Math.floor(day.main.day)}°C</p>
             </div>
           ))}
         </div>
