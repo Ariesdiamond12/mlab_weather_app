@@ -43,11 +43,35 @@
   color: #ffffff;
   font-size: 50px;
   line-height: 1;
+  text-align: center;
 }
 
 .location {
   color: #ffffff;
   font-size: 35px;
+}
+
+.weather_location {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 30px;
+  align-items: center;
+}
+
+.col {
+  display: flex; /* Use flexbox for the column */
+  flex-direction: column; /* Align items in a column */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  text-align: center; /* Center text */
+  min-height: 100px; /* Ensure there's enough height */
 }
 
 .weather_data {
@@ -57,6 +81,7 @@
   display: flex;
   justify-content: space-between; /* Push humidity and wind to opposite sides */
   flex-direction: row; /* Ensure they are in a row */
+  align-items: center;
 }
 
 .weather_data .col {

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { MdOutlineVisibility } from "react-icons/md";
+import { WiRaindrop } from "react-icons/wi";
 import "./Weather.css";
 import search_icon from "../assets/images/search.png";
 import wind from "../assets/images/wind.png";
@@ -148,24 +150,44 @@ function Weather() {
         />
       </div>
 
-      <img src={weatherData.icon} alt="" className="weather_icon" />
-      <p className="temperature">{weatherData.temperature}°c</p>
-      <p className="location">{weatherData.location}</p>
-
       {/* Second Column */}
       <div className="weather_data">
-        <div className="col">
-          <img src={humidity} alt="" />
-          <div>
-            <p>{weatherData.humidity}%</p>
-            <span>Humidity</span>
+        <div className="weather_location">
+          <div className="columns">
+            <img src={weatherData.icon} alt="" className="weather_icon" />
+            <p className="temperature">{weatherData.temperature}°c</p>
           </div>
+          <p className="location">{weatherData.location}</p>
         </div>
-        <div className="col">
-          <img src={wind} alt="" />
-          <div>
-            <p>{weatherData.windSpeed}km/h</p>
-            <span>Wind Speed</span>
+
+        <div className="rows">
+          <div className="col">
+            <img src={humidity} alt="" />
+            <div>
+              <p>{weatherData.humidity}%</p>
+              <span>Humidity</span>
+            </div>
+          </div>
+          <div className="col">
+            <img src={wind} alt="" />
+            <div>
+              <p>{weatherData.windSpeed}km/h</p>
+              <span>Wind Speed</span>
+            </div>
+          </div>
+          <div className="col">
+            <MdOutlineVisibility />
+            <div>
+              <p>{weatherData.visibility}km</p>
+              <span>Visibility</span>
+            </div>
+          </div>
+          <div className="col">
+            <WiRaindrop />
+            <div>
+              <p>{weatherData.precipitation}</p>
+              <span>Precipitation</span>
+            </div>
           </div>
         </div>
       </div>
