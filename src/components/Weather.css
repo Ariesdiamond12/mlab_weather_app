@@ -3,10 +3,34 @@
   place-self: center;
   padding: 40px;
   border-radius: 10px;
-  background-image: linear-gradient(45deg, #5465ff, #788bff);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.day-theme {
+  background-image: linear-gradient(45deg, #5465ff, #788bff); /* Day gradient */
+  color: #ffffff;
+}
+
+.night-theme {
+  background-image: linear-gradient(45deg, #2c2c54, #1a1a38); /* Night gradient */
+  color: #ffffff;
+}
+
+/* Additional styling for the toggle button */
+.toggle-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #5465ff;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+.toggle-button:hover {
+  background-color: #f0f0f0; /* Change on hover */
 }
 
 .search_bar {
@@ -66,12 +90,12 @@
 }
 
 .col {
-  display: flex; /* Use flexbox for the column */
-  flex-direction: column; /* Align items in a column */
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
-  text-align: center; /* Center text */
-  min-height: 100px; /* Ensure there's enough height */
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
+  min-height: 100px; 
 }
 
 .weather_data {
@@ -79,8 +103,8 @@
   margin-top: 40px;
   color: #ffffff;
   display: flex;
-  justify-content: space-between; /* Push humidity and wind to opposite sides */
-  flex-direction: row; /* Ensure they are in a row */
+  justify-content: space-between; 
+  flex-direction: row; 
   align-items: center;
 }
 

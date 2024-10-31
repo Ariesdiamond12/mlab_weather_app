@@ -14,6 +14,10 @@ import sun from "../assets/images/clear.png";
 function Weather() {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState({});
+  const [isDay, setIsDay] = useState(true);
+  const [toggleTheme,  setToggleTheme] = useState(false);
+  
+
 
   const allIcons = {
     "01d": sun,
@@ -32,36 +36,26 @@ function Weather() {
     "13n": snow,
   };
 
-  //whenever we call the search function it we will provide one city name and it will be provided in the url
   const search = async (city) => {
     try {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
-      //In the fetch we will provide the  url and the method we want to use
-      //Then convert the response using json method
       const response = await fetch(url);
-      const data = await response.json(); // in the data we will get the weather data from the  api
+      const data = await response.json();
 
       if (response.ok) {
         const { lat, lon } = data.coord;
         const icon = allIcons[data.weather[0].icon] || sun;
 
-        // http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6////////////by city id
-
-        const forecastUrl = ` http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
         const forecastResponse = await fetch(forecastUrl);
         const forecastData = await forecastResponse.json();
-
-        console.log("weatherData", data);
-        console.log("forecastData", forecastData.list);
 
         const filterDailyForecasts = (forecastList) => {
           let dailyForecasts = [];
           let currentDate = null;
 
           forecastList.forEach((forecast) => {
-            const date = new Date(forecast.dt * 1000).toLocaleDateString(
-              "en-US"
-            );
+            const date = new Date(forecast.dt * 1000).toLocaleDateString("en-US");
             if (date !== currentDate) {
               dailyForecasts.push(forecast);
               currentDate = date;
@@ -74,13 +68,13 @@ function Weather() {
         setWeatherData({
           humidity: data.main.humidity,
           windSpeed: data.wind.speed,
+          visibility: data.visibility / 1000, // Convert to km
+          precipitation: data.rain ? `${data.rain["1h"]} mm` : "0 mm",
           temperature: Math.floor(data.main.temp),
           location: data.name,
-
           icon: icon,
-
-          hourly: forecastData.list.slice(0, 5), // Store hourly forecast
-          daily: filterDailyForecasts(forecastData.list), // Store daily forecast
+          hourly: forecastData.list.slice(0, 5), // Adjusted to display first 5 hourly forecasts
+          daily: filterDailyForecasts(forecastData.list),
         });
       } else {
         console.error("Error fetching weather data:", data.message);
@@ -91,7 +85,6 @@ function Weather() {
   };
 
   useEffect(() => {
-    //we will call the search function with the city name from the url
     search("Johannesburg");
   }, []);
 
@@ -106,7 +99,7 @@ function Weather() {
             <div key={index} className="hour">
               <p>{new Date(hour.dt * 1000).getHours()}:00</p>
               <img src={allIcons[hour.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(hour.main.temp)}°C</p>
+              <p>{Math.floor(hour.main.temp)}°C</p> {/* Access temp from main */}
             </div>
           ))}
         </div>
@@ -117,9 +110,12 @@ function Weather() {
   const renderDailyForecast = () => {
     if (!weatherData.daily) return null;
 
+const toggleTheme = () => {
+  setIsDay(!isDay); // This toggles the theme
+};
+
     return (
       <div className="daily_forecast">
-        {console.log(weatherData.daily)}
         <h3>Daily Forecast</h3>
         <div className="daily_container">
           {weatherData.daily.map((day, index) => (
@@ -130,7 +126,7 @@ function Weather() {
                 })}
               </p>
               <img src={allIcons[day.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(day.main.day)}°C</p>
+              <p>{Math.floor(day.main.temp)}°C</p> {/* Access temp from main */}
             </div>
           ))}
         </div>
@@ -139,60 +135,63 @@ function Weather() {
   };
 
   return (
-    // First Column
-    <div className="weather">
-      <div className="search_bar">
-        <input ref={inputRef} type="text" placeholder="Search" />
-        <img
-          src={search_icon}
-          alt="search icon"
-          onClick={() => search(inputRef.current.value)}
-        />
+    <div className={`weather ${isDay ? "day-theme" : "night-theme"}`}>
+    <div className="search_bar">
+      <input ref={inputRef} type="text" placeholder="Search" />
+      <img
+        src={search_icon}
+        alt="search icon"
+        onClick={() => search(inputRef.current.value)}
+      />
+    </div>
+
+    <button onClick={toggleTheme} className="toggle-button">
+      {isDay ? "Switch to Night" : "Switch to Day"}
+    </button>
+
+    <div className="weather_data">
+  <div className="weather_location">
+    <div className="columns">
+      <img src={weatherData.icon} alt="" className="weather_icon" />
+      <p className="temperature">{weatherData.temperature}°c</p>
+    </div>
+    <p className="location">{weatherData.location}</p>
+  </div>
+
+  {/* New Row for Weather Data */}
+  <div className="weather_info">
+    <div className="col">
+      <img src={humidity} alt="Humidity" />
+      <div>
+        <p>{weatherData.humidity}%</p>
+        <span>Humidity</span>
       </div>
-
-      {/* Second Column */}
-      <div className="weather_data">
-        <div className="weather_location">
-          <div className="columns">
-            <img src={weatherData.icon} alt="" className="weather_icon" />
-            <p className="temperature">{weatherData.temperature}°c</p>
-          </div>
-          <p className="location">{weatherData.location}</p>
-        </div>
-
-        <div className="rows">
-          <div className="col">
-            <img src={humidity} alt="" />
-            <div>
-              <p>{weatherData.humidity}%</p>
-              <span>Humidity</span>
-            </div>
-          </div>
-          <div className="col">
-            <img src={wind} alt="" />
-            <div>
-              <p>{weatherData.windSpeed}km/h</p>
-              <span>Wind Speed</span>
-            </div>
-          </div>
-          <div className="col">
-            <MdOutlineVisibility />
-            <div>
-              <p>{weatherData.visibility}km</p>
-              <span>Visibility</span>
-            </div>
-          </div>
-          <div className="col">
-            <WiRaindrop />
-            <div>
-              <p>{weatherData.precipitation}</p>
-              <span>Precipitation</span>
-            </div>
-          </div>
-        </div>
+    </div>
+    <div className="col">
+      <img src={wind} alt="Wind Speed" />
+      <div>
+        <p>{weatherData.windSpeed} km/h</p>
+        <span>Wind Speed</span>
       </div>
+    </div>
+    <div className="col">
+      <MdOutlineVisibility />
+      <div>
+        <p>{weatherData.visibility} km</p>
+        <span>Visibility</span>
+      </div>
+    </div>
+    <div className="col">
+      <WiRaindrop />
+      <div>
+        <p>{weatherData.precipitation}</p>
+        <span>Precipitation</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-      {/* Hourly and Daily Forecast */}
+
       {renderHourlyForecast()}
       {renderDailyForecast()}
     </div>

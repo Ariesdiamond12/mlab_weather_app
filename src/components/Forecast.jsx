@@ -1,7 +1,8 @@
 import React from "react";
 
-function Forecast() {
-  if (!weatherData || !weatherData.hourly) return null;
+function Forecast({ weatherData, allIcons, sun }) {
+  if (!weatherData || !weatherData.hourly || !weatherData.daily) return null;
+
   return (
     <div>
       <div className="hourly_forecast">
@@ -11,7 +12,7 @@ function Forecast() {
             <div key={index} className="hour">
               <p>{new Date(hour.dt * 1000).getHours()}:00</p>
               <img src={allIcons[hour.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(hour.temp)}°C</p>
+              <p>{Math.floor(hour.main.temp)}°C</p> {/* Ensure you access temp from main */}
             </div>
           ))}
         </div>
@@ -28,7 +29,7 @@ function Forecast() {
                 })}
               </p>
               <img src={allIcons[day.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(day.temp.day)}°C</p>
+              <p>{Math.floor(day.temp.day)}°C</p> {/* Ensure you access temp from temp */}
             </div>
           ))}
         </div>
