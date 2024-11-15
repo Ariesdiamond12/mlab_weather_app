@@ -9,8 +9,9 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-function Privacy() {
+function PrivacyModal() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  
   return (
     <>
       <Button
@@ -474,4 +475,4 @@ function Privacy() {
   );
 }
 
-export default Privacy;
+export default PrivacyModal;

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MdOutlineVisibility } from "react-icons/md";
-import { WiRaindrop } from "react-icons/wi";
+import { FaEye } from "react-icons/fa";
+import { IoWater } from "react-icons/io5";
+import { TbWind } from "react-icons/tb";
+import { WiHumidity } from "react-icons/wi";
 import "./Weather.css";
 import search_icon from "../assets/images/search.png";
 import wind from "../assets/images/wind.png";
@@ -10,7 +13,7 @@ import drizzle from "../assets/images/drizzle.png";
 import snow from "../assets/images/snow.png";
 import humidity from "../assets/images/humidity.png";
 import sun from "../assets/images/clear.png";
-import Privacy from "./Privacy";
+import PrivacyModal from "./PrivacyModal";
 
 function Weather() {
   const inputRef = useRef();
@@ -55,7 +58,9 @@ function Weather() {
           let currentDate = null;
 
           forecastList.forEach((forecast) => {
-            const date = new Date(forecast.dt * 1000).toLocaleDateString("en-US");
+            const date = new Date(forecast.dt * 1000).toLocaleDateString(
+              "en-US"
+            );
             if (date !== currentDate) {
               dailyForecasts.push(forecast);
               currentDate = date;
@@ -160,28 +165,28 @@ function Weather() {
 
         <div className="weather_info">
           <div className="col">
-            <img src={humidity} alt="Humidity" />
+          <WiHumidity />
             <div>
               <p>{weatherData.humidity}%</p>
               <span>Humidity</span>
             </div>
           </div>
           <div className="col">
-            <img src={wind} alt="Wind Speed" />
+          <TbWind />
             <div>
               <p>{weatherData.windSpeed} km/h</p>
               <span>Wind Speed</span>
             </div>
           </div>
           <div className="col">
-            <MdOutlineVisibility />
+          <FaEye />
             <div>
               <p>{weatherData.visibility} km</p>
               <span>Visibility</span>
             </div>
           </div>
           <div className="col">
-            <WiRaindrop />
+          <IoWater />
             <div>
               <p>{weatherData.precipitation}</p>
               <span>Precipitation</span>
@@ -193,7 +198,7 @@ function Weather() {
       {renderHourlyForecast()}
       {renderDailyForecast()}
 
-      <Privacy />
+      <PrivacyModal />
     </div>
   );
 }

@@ -83,19 +83,28 @@
 
 .columns {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-right: 30px;
+  gap: 20px;
   align-items: center;
 }
 
+.weather_info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 20px; 
+  padding: 20px;
+}
+
 .col {
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: row; 
   align-items: center; 
   justify-content: center; 
-  text-align: center; 
-  min-height: 100px; 
+  text-align: center;
+  padding: 15px; /* Add padding inside each column */
+  background-color:#9bb1ff ; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  min-height: 120px; 
 }
 
 .weather_data {
@@ -103,7 +112,7 @@
   margin-top: 40px;
   color: #ffffff;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-around; 
   flex-direction: row; 
   align-items: center;
 }
@@ -130,6 +139,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 
 .hour {
   margin: 10px;
@@ -162,3 +172,4 @@ h3 {
   width: 70px;
   height: 70px;
 }
+
