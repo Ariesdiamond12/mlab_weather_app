@@ -12,3 +12,7 @@
   display: grid;
   background: #f5efff;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -1,36 +1,46 @@
 .weather {
-  width: 70%;
+  width: 100%;
   place-self: center;
   padding: 40px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .day-theme {
-  background-image: linear-gradient(45deg, #5465ff, #788bff); /* Day gradient */
+  background-image: linear-gradient(45deg, #5465ff, #788bff);
   color: #ffffff;
 }
 
 .night-theme {
-  background-image: linear-gradient(45deg, #2c2c54, #1a1a38); /* Night gradient */
+  background-image: linear-gradient(45deg, #2c2c54, #1a1a38);
   color: #ffffff;
 }
 
-/* Additional styling for the toggle button */
 .toggle-button {
-  padding: 10px 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
   border: none;
-  border-radius: 5px;
-  background-color: #ffffff;
-  color: #5465ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  margin: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .toggle-button:hover {
-  background-color: #f0f0f0; /* Change on hover */
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
 }
 
 .search_bar {
@@ -89,22 +99,22 @@
 
 .weather_info {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 20px; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   padding: 20px;
 }
 
 .col {
   display: flex;
-  flex-direction: row; 
-  align-items: center; 
-  justify-content: center; 
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 15px; /* Add padding inside each column */
-  background-color:#9bb1ff ; 
-  border-radius: 10px; 
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  min-height: 120px; 
+  padding: 15px;
+  background-color: #9bb1ff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 120px;
 }
 
 .weather_data {
@@ -112,8 +122,8 @@
   margin-top: 40px;
   color: #ffffff;
   display: flex;
-  justify-content: space-around; 
-  flex-direction: row; 
+  justify-content: space-around;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -139,7 +149,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
-
 
 .hour {
   margin: 10px;
@@ -172,4 +181,3 @@ h3 {
   width: 70px;
   height: 70px;
 }
-

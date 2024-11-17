@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MdOutlineVisibility } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { IoWater } from "react-icons/io5";
 import { TbWind } from "react-icons/tb";
 import { WiHumidity } from "react-icons/wi";
+import { FaSun } from "react-icons/fa6";
+import { IoIosMoon } from "react-icons/io";
 import "./Weather.css";
 import search_icon from "../assets/images/search.png";
-import wind from "../assets/images/wind.png";
 import cloud from "../assets/images/cloud.png";
 import rain from "../assets/images/rain.png";
 import drizzle from "../assets/images/drizzle.png";
 import snow from "../assets/images/snow.png";
-import humidity from "../assets/images/humidity.png";
 import sun from "../assets/images/clear.png";
 import PrivacyModal from "./PrivacyModal";
 
@@ -148,11 +147,10 @@ function Weather() {
           alt="search icon"
           onClick={() => search(inputRef.current.value)}
         />
-      </div>
-
-      <button onClick={handleToggleTheme} className="toggle-button">
-        {isDay ? "Switch to Night" : "Switch to Day"}
+        <button onClick={handleToggleTheme} className="toggle-button">
+        {isDay ? <FaSun size={20}/> : <IoIosMoon size={20}/>}
       </button>
+      </div>
 
       <div className="weather_data">
         <div className="weather_location">

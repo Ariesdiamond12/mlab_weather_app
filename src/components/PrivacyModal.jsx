@@ -16,7 +16,7 @@ function PrivacyModal() {
     <>
       <Button
         onPress={onOpen}
-        className="text-white bg-[#5465ff] rounded-lg w-48 py-2 ml-4 items-center"
+        className="text-white bg-[#9bb1ff] rounded-full w-36 py-2 ml-4 items-end"
       >
         Privacy Policy
       </Button>
