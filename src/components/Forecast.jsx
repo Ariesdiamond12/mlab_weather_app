@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Forecast({ weatherData, allIcons, sun }) {
   if (!weatherData || !weatherData.hourly || !weatherData.daily) return null;
 
+  // State for temperature unit
+  const [unit, setUnit] = useState("C"); // "C" for Celsius, "F" for Fahrenheit
+
+  // Function to convert Celsius to Fahrenheit
+  const celsiusToFahrenheit = (tempInCelsius) => (tempInCelsius * 9) / 5 + 32;
+
+  // Function to toggle temperature unit
+  const toggleUnit = () => {
+    setUnit(unit === "C" ? "F" : "C");
+  };
+
   return (
     <div>
+      <div className="unit-toggle">
+        <button onClick={toggleUnit}>
+          Switch to {unit === "C" ? "Fahrenheit" : "Celsius"}
+        </button>
+      </div>
+
       <div className="hourly_forecast">
         <h3>Hourly Forecast</h3>
         <div className="hourly_container">
@@ -12,7 +29,11 @@ function Forecast({ weatherData, allIcons, sun }) {
             <div key={index} className="hour">
               <p>{new Date(hour.dt * 1000).getHours()}:00</p>
               <img src={allIcons[hour.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(hour.main.temp)}°C</p> {/* Ensure you access temp from main */}
+              <p>
+                {unit === "C"
+                  ? `${Math.floor(hour.main.temp)}°C`
+                  : `${Math.floor(celsiusToFahrenheit(hour.main.temp))}°F`}
+              </p>
             </div>
           ))}
         </div>
@@ -29,7 +50,11 @@ function Forecast({ weatherData, allIcons, sun }) {
                 })}
               </p>
               <img src={allIcons[day.weather[0].icon] || sun} alt="icon" />
-              <p>{Math.floor(day.temp.day)}°C</p> {/* Ensure you access temp from temp */}
+              <p>
+                {unit === "C"
+                  ? `${Math.floor(day.temp.day)}°C`
+                  : `${Math.floor(celsiusToFahrenheit(day.temp.day))}°F`}
+              </p>
             </div>
           ))}
         </div>

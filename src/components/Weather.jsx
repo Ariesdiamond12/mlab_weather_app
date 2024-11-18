@@ -13,11 +13,13 @@ import drizzle from "../assets/images/drizzle.png";
 import snow from "../assets/images/snow.png";
 import sun from "../assets/images/clear.png";
 import PrivacyModal from "./PrivacyModal";
+import { determineUpcomingEvent } from "../../utils/weatherUtils";
 
 function Weather() {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState({});
   const [isDay, setIsDay] = useState(true);
+  const [unit, setUnit] = useState("C"); // State to track the temperature unit
 
   const allIcons = {
     "01d": sun,
@@ -80,6 +82,9 @@ function Weather() {
           hourly: forecastData.list.slice(0, 5), // Display first 5 hourly forecasts
           daily: filterDailyForecasts(forecastData.list),
         });
+
+        // Call determineUpcomingEvent after fetching the data
+        determineUpcomingEvent(data);
       } else {
         console.error("Error fetching weather data:", data.message);
       }
@@ -96,6 +101,14 @@ function Weather() {
     setIsDay(!isDay);
   };
 
+  // Convert Celsius to Fahrenheit
+  const celsiusToFahrenheit = (temp) => (temp * 9) / 5 + 32;
+
+  // Toggle between Celsius and Fahrenheit
+  const handleToggleUnit = () => {
+    setUnit((prevUnit) => (prevUnit === "C" ? "F" : "C"));
+  };
+
   const renderHourlyForecast = () => {
     if (!weatherData.hourly) return null;
 
@@ -107,7 +120,11 @@ function Weather() {
             <div key={index} className="hour">
               <p>{new Date(hour.dt * 1000).getHours()}:00</p>
               <img src={getWeatherIcon(hour.weather[0].icon)} alt="icon" />
-              <p>{Math.floor(hour.main.temp)}°C</p>
+              <p>
+                {unit === "C"
+                  ? `${Math.floor(hour.main.temp)}°C`
+                  : `${Math.floor(celsiusToFahrenheit(hour.main.temp))}°F`}
+              </p>
             </div>
           ))}
         </div>
@@ -130,7 +147,11 @@ function Weather() {
                 })}
               </p>
               <img src={getWeatherIcon(day.weather[0].icon)} alt="icon" />
-              <p>{Math.floor(day.main.temp)}°C</p>
+              <p>
+                {unit === "C"
+                  ? `${Math.floor(day.main.temp)}°C`
+                  : `${Math.floor(celsiusToFahrenheit(day.main.temp))}°F`}
+              </p>
             </div>
           ))}
         </div>
@@ -147,8 +168,16 @@ function Weather() {
           alt="search icon"
           onClick={() => search(inputRef.current.value)}
         />
+        {/* Button to toggle between day and night theme */}
         <button onClick={handleToggleTheme} className="toggle-button">
           {isDay ? <FaSun size={20} /> : <IoIosMoon size={20} />}
+        </button>
+      </div>
+
+      {/* Separate button for unit toggle */}
+      <div className="unit-toggle">
+        <button onClick={handleToggleUnit} className="unit-toggle-button">
+          {unit === "C" ? "Switch to °F" : "Switch to °C"}
         </button>
       </div>
 
@@ -156,7 +185,11 @@ function Weather() {
         <div className="weather_location">
           <div className="columns">
             <img src={weatherData.icon} alt="" className="weather_icon" />
-            <p className="temperature">{weatherData.temperature}°c</p>
+            <p className="temperature">
+              {unit === "C"
+                ? `${weatherData.temperature}°C`
+                : `${celsiusToFahrenheit(weatherData.temperature)}°F`}
+            </p>
           </div>
           <p className="location">{weatherData.location}</p>
         </div>
