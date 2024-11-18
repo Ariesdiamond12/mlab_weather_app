@@ -89,7 +89,7 @@ function Weather() {
   };
 
   useEffect(() => {
-    search("Johannesburg");
+    search("Polokwane");
   }, []);
 
   const handleToggleTheme = () => {
@@ -148,8 +148,8 @@ function Weather() {
           onClick={() => search(inputRef.current.value)}
         />
         <button onClick={handleToggleTheme} className="toggle-button">
-        {isDay ? <FaSun size={20}/> : <IoIosMoon size={20}/>}
-      </button>
+          {isDay ? <FaSun size={20} /> : <IoIosMoon size={20} />}
+        </button>
       </div>
 
       <div className="weather_data">
@@ -163,28 +163,28 @@ function Weather() {
 
         <div className="weather_info">
           <div className="col">
-          <WiHumidity />
+            <WiHumidity />
             <div>
               <p>{weatherData.humidity}%</p>
               <span>Humidity</span>
             </div>
           </div>
           <div className="col">
-          <TbWind />
+            <TbWind />
             <div>
               <p>{weatherData.windSpeed} km/h</p>
               <span>Wind Speed</span>
             </div>
           </div>
           <div className="col">
-          <FaEye />
+            <FaEye />
             <div>
               <p>{weatherData.visibility} km</p>
               <span>Visibility</span>
             </div>
           </div>
           <div className="col">
-          <IoWater />
+            <IoWater />
             <div>
               <p>{weatherData.precipitation}</p>
               <span>Precipitation</span>
