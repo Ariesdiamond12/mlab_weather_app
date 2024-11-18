@@ -1,0 +1,230 @@
+.weather {
+  width: 100%;
+  height: 100%;
+  place-self: center;
+  padding: 40px;
+  /* border-radius: 10px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.day-theme {
+  background-image: url('../assets/images/sun.jpg'); /* Replace with your daytime image path */
+  background-size: cover; 
+  background-position: center;
+  color: #ffffff;
+}
+
+.night-theme {
+  background-image: url('../assets/images/half_moon.jpg'); /* Replace with your nighttime image path */
+  background-size: cover;
+  background-position: center; 
+  color: #ffffff;
+}
+
+.day-theme::before,
+.night-theme::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); 
+  z-index: -1;
+}
+
+
+.toggle-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.toggle-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
+}
+
+.unit-toggle-button {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.unit-toggle-button .toggle-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.unit-toggle-button .toggle-button:hover {
+  background-color: #0056b3;
+}
+
+
+.search_bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search_bar input {
+  height: 50px;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  padding-left: 25px;
+  color: #626262;
+  background: #ffffff;
+  font-size: 18px;
+}
+
+.search_bar img {
+  width: 50px;
+  padding: 15px;
+  border-radius: 50%;
+  background: #ebfffc;
+  cursor: pointer;
+}
+
+.weather_icon {
+  width: 150px;
+  margin: 30px 0;
+}
+
+.temperature {
+  color: #ffffff;
+  font-size: 50px;
+  line-height: 1;
+  text-align: center;
+}
+
+.location {
+  color: #ffffff;
+  font-size: 35px;
+}
+
+.weather_location {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.weather_info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+/* General col style */
+.col {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 15px;
+  background-color: #9bb1ff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 120px;
+  transition: background-color 0.3s ease;
+}
+
+/* Dark mode specific style */
+.night-theme .col {
+  background-color: gray; /* New color for night theme */
+}
+
+
+.weather_data {
+  width: 100%;
+  margin-top: 40px;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+}
+
+.weather_data .col {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 22px;
+}
+
+.weather_data .col span {
+  display: block;
+  font-size: 16px;
+}
+
+.weather_data .col img {
+  width: 26px;
+  margin-top: 10px;
+}
+
+.hourly_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.hour {
+  margin: 10px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.hour img {
+  width: 70px;
+  height: 70px;
+}
+
+h3 {
+  color: #ffffff;
+}
+
+.daily_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.day {
+  margin: 10px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.day img {
+  width: 70px;
+  height: 70px;
+}
