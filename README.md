@@ -12,6 +12,11 @@
 - Users are able to customise the app's theme (day or night)
 - Users are able to view the Privacy Policy and Terms of Service
 
+# Installation Instructions
+1. Clone the repository using the following command: git clone `https://github.com/Ariesdiamond12/mlab_weather_app`
+2. Install the required packages using the following command: npm install
+3. Start the development server using the following command: npm run dev
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
