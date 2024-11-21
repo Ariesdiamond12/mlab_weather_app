@@ -5,6 +5,7 @@ import { TbWind } from "react-icons/tb";
 import { WiHumidity } from "react-icons/wi";
 import { FaSun } from "react-icons/fa6";
 import { IoIosMoon } from "react-icons/io";
+import { FaLocationDot } from "react-icons/fa6";
 import "./Weather.css";
 import search_icon from "../assets/images/search.png";
 import cloud from "../assets/images/cloud.png";
@@ -15,11 +16,14 @@ import sun from "../assets/images/clear.png";
 import PrivacyModal from "./PrivacyModal";
 import { determineUpcomingEvent } from "../../utils/weatherUtils";
 
+
+
 function Weather() {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState({});
   const [isDay, setIsDay] = useState(true);
   const [unit, setUnit] = useState("C"); // State to track the temperature unit
+  const [geolocation, setGeoLocation] = useState( )
 
   const allIcons = {
     "01d": sun,
@@ -40,24 +44,32 @@ function Weather() {
 
   const getWeatherIcon = (iconCode) => allIcons[iconCode] || sun;
 
-  const search = async (city) => {
+  const search = async (city = "", lat, lon) => {
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+      let url;
+      if (lat && lon) {
+        url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+      } else if (city) {
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+      } else {
+        throw new Error("City or coordinates must be provided.");
+      }
+  
       const response = await fetch(url);
       const data = await response.json();
-
+  
       if (response.ok) {
-        const { lat, lon } = data.coord;
+        const { lat: latitude, lon: longitude } = data.coord;
         const icon = getWeatherIcon(data.weather[0].icon);
-
-        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
+  
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=d8cfa3ddb97256a6a3b3d3fc19a9c8e6`;
         const forecastResponse = await fetch(forecastUrl);
         const forecastData = await forecastResponse.json();
-
+  
         const filterDailyForecasts = (forecastList) => {
           let dailyForecasts = [];
           let currentDate = null;
-
+  
           forecastList.forEach((forecast) => {
             const date = new Date(forecast.dt * 1000).toLocaleDateString(
               "en-US"
@@ -67,10 +79,10 @@ function Weather() {
               currentDate = date;
             }
           });
-
+  
           return dailyForecasts;
         };
-
+  
         setWeatherData({
           humidity: data.main.humidity,
           windSpeed: data.wind.speed,
@@ -82,8 +94,7 @@ function Weather() {
           hourly: forecastData.list.slice(0, 5), // Display first 5 hourly forecasts
           daily: filterDailyForecasts(forecastData.list),
         });
-
-        // Call determineUpcomingEvent after fetching the data
+  
         determineUpcomingEvent(data);
       } else {
         console.error("Error fetching weather data:", data.message);
@@ -92,10 +103,46 @@ function Weather() {
       console.error("Error fetching weather data:", error);
     }
   };
+  
+
+  const getUserLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            resolve({ latitude, longitude });
+          },
+          (error) => {
+            console.error("Error getting user location:", error);
+            reject(error);
+          }
+        );
+      } else {
+        reject(new Error("Geolocation is not supported by this browser."));
+      }
+    });
+  };
+  
 
   useEffect(() => {
-    search("Polokwane");
+    const fetchWeatherData = async () => {
+      try {
+        const location = await getUserLocation();
+        setGeoLocation(location); // Store geolocation in state if needed
+        const { latitude, longitude } = location;
+        // Fetch weather data using coordinates
+        search("", latitude, longitude);
+      } catch (error) {
+        console.error("Could not fetch user location:", error);
+        // Fallback to a default city if location fails
+        search("");
+      }
+    };
+  
+    fetchWeatherData();
   }, []);
+  
 
   const handleToggleTheme = () => {
     setIsDay(!isDay);
@@ -168,6 +215,7 @@ function Weather() {
           alt="search icon"
           onClick={() => search(inputRef.current.value)}
         />
+        <FaLocationDot className="cursor-pointer" onClick={getUserLocation}/>
         {/* Button to toggle between day and night theme */}
         <button onClick={handleToggleTheme} className="toggle-button">
           {isDay ? <FaSun size={20} /> : <IoIosMoon size={20} />}

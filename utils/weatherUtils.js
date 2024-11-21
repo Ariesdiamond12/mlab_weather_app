@@ -1,4 +1,4 @@
-//The weatherUtils.js file is to process weather data and generate relevant weather-related messages for the user, based on the current weather conditions
+//This  function is designed to analyze the weather data received and provide relevant messages based on specific conditions, such as heavy rain
 export const determineUpcomingEvent = (data) => {
   const messages = [];
 
